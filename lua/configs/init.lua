@@ -1,3 +1,6 @@
+require("configs.filetype")
+require("configs.impatient")
+
 require("configs.bufferline")
 require("configs.cmp")
 require("configs.dressing")
@@ -9,7 +12,7 @@ require("configs.nvim-autopairs")
 require("configs.nvim-colorizer")
 require("configs.nvim-tree")
 require("configs.nvim-treesitter")
+require("configs.tabnine")
 require("configs.telescope")
 require("configs.todo-comments")
 require("configs.tokyonight")
-
