@@ -16,6 +16,7 @@ vim.o.incsearch = true
 vim.o.lazyredraw = true
 vim.o.mouse = "a"
 vim.o.number = true
+vim.o.pumheight = 20
 vim.o.scrolloff = 3
 vim.o.shiftwidth = 2
 vim.o.shortmess = vim.o.shortmess .. "c"

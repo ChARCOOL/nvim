@@ -6,7 +6,7 @@ require("luasnip.loaders.from_vscode").lazy_load()
 
 luasnip.config.set_config({
 	history = true,
-	updateevents = "TextChanged,TextChangedI",
+	updateevents = "TextChanged,InsertEnter",
 })
 
 local check_backspace = function()
@@ -21,7 +21,10 @@ cmp.setup({
 		end,
 	},
 	completion = {
-		autocomplete = true,
+		autocomplete = {
+			cmp.TriggerEvent.InsertEnter,
+			cmp.TriggerEvent.TextChanged,
+		},
 		completeopt = "menu,menuone,noselect,noinsert",
 	},
 	mapping = {
@@ -90,15 +93,17 @@ cmp.setup({
 		end,
 	},
 	sources = {
-		{ name = "luasnip" },
-		{ name = "nvim_lsp_signature_help" },
-		{ name = "cmp_tabnine" },
-		{ name = "nvim_lsp" },
-		{ name = "buffer", keyword_length = 5, max_item_count = 10 },
-		{ name = "path" },
-		{ name = "crates" },
-		{ name = "calc" },
-		{ name = "nvim_lua" },
+		{ name = "crates", group_index = 1 },
+		{ name = "nvim_lsp", group_index = 2 },
+		{ name = "nvim_lua", group_index = 2 },
+		{ name = "luasnip", group_index = 2 },
+		{ name = "buffer", group_index = 2 },
+		{ name = "cmp_tabnine", group_index = 2 },
+		{ name = "path", group_index = 2 },
+	},
+	confirm_opts = {
+		behavior = cmp.ConfirmBehavior.Replace,
+		select = false,
 	},
 	window = {
 		documentation = {
@@ -112,8 +117,5 @@ cmp.setup({
 	},
 	experimental = {
 		ghost_text = true,
-	},
-	performance = {
-		trigger_debounce_time = 300,
 	},
 })
