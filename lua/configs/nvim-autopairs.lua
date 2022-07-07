@@ -1,6 +1,10 @@
 require("nvim-autopairs").setup({
-	disable_filetype = { "TelescopePrompt", "vim" },
 	check_ts = true,
+	enable_moveright = true,
+	disable_filetype = {
+		"TelescopePrompt",
+		"vim",
+	},
 })
 
 require("cmp").event:on(

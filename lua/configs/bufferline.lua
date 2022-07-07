@@ -4,7 +4,6 @@ require("bufferline").setup({
 		separator_style = "thick",
 		show_close_icon = false,
 		show_buffer_close_icons = false,
-		diagnostics = "nvim_lsp",
 		offsets = {
 			{
 				filetype = "undotree",

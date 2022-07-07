@@ -18,25 +18,30 @@ M.capabilities.textDocument.foldingRange = {
 M.setup = function()
 	local icons = require("icons")
 
-	local signs = {
-		{ name = "DiagnosticSignError", text = icons.diagnostics.Error },
-		{ name = "DiagnosticSignWarn", text = icons.diagnostics.Warning },
-		{ name = "DiagnosticSignHint", text = icons.diagnostics.Hint },
-		{ name = "DiagnosticSignInfo", text = icons.diagnostics.Information },
-	}
-
-	for _, sign in ipairs(signs) do
-		vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
-	end
+	vim.fn.sign_define("DiagnosticSignError", {
+		numhl = "LspDiagnosticsLineNrError",
+		text = icons.diagnostics.Error,
+	})
+	vim.fn.sign_define("DiagnosticSignWarn", {
+		numhl = "LspDiagnosticsLineNrWarning",
+		text = icons.diagnostics.Warning,
+	})
+	vim.fn.sign_define("DiagnosticSignInfo", {
+		text = icons.diagnostics.Hint,
+	})
+	vim.fn.sign_define("DiagnosticSignHint", {
+		text = icons.diagnostics.Information,
+	})
 
 	vim.diagnostic.config({
 		virtual_text = false,
-		severity_sort = false,
+		update_in_insert = false,
+		severity_sort = true,
+		signs = true,
 		float = {
-			focusable = false,
 			style = "minimal",
 			border = "rounded",
-			source = "if_many",
+			source = "always",
 			header = "",
 			prefix = "",
 		},
@@ -62,6 +67,7 @@ M.on_attach = function(client, bufnr)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "<c-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>", opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "gl", '<cmd>lua vim.diagnostic.open_float(0, { scope = "line" })<cr>', opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "[g", '<cmd>lua vim.diagnostic.goto_prev({ border = "rounded" })<cr>', opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "]g", '<cmd>lua vim.diagnostic.goto_next({ border = "rounded" })<cr>', opts)
 
