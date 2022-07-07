@@ -39,17 +39,16 @@ cmp.setup({
 		),
 	},
 	sources = cmp.config.sources({
-		{ name = "copilot" },
 		{ name = "cmp_tabnine" },
 		{ name = "nvim_lsp" },
 		{ name = "nvim_lua" },
 		{ name = "luasnip" },
 		{ name = "path" },
-		{ name = "emoji" },
 	}, {
 		{ name = "buffer" },
 	}),
 	sorting = {
+		priority_weight = 2,
 		comparators = {
 			cmp.config.compare.offset,
 			cmp.config.compare.exact,
@@ -84,8 +83,6 @@ cmp.setup({
 				cmdline = "[CMD]",
 				cmp_git = "[GIT]",
 				cmp_tabnine = "[TBN]",
-				copilot = "[COP]",
-				emoji = "[EMJ]",
 				luasnip = "[SNIP]",
 				nvim_lsp = "[LSP]",
 				nvim_lua = "[API]",
@@ -94,6 +91,9 @@ cmp.setup({
 				treesitter = "[TREE]",
 			},
 		}),
+	},
+	view = {
+		entries = { name = "custom", selection_order = "bottom_up" },
 	},
 	window = {
 		documentation = cmp.config.window.bordered(),
