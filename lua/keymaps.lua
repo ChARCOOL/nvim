@@ -1,8 +1,12 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
-function nnoremap(lhs, rhs)
+local function nnoremap(lhs, rhs)
 	vim.api.nvim_set_keymap("n", lhs, rhs, { noremap = true, silent = true })
+end
+
+local function map(lhs, rhs)
+	vim.api.nvim_set_keymap("n", lhs, rhs, { noremap = false, silent = true })
 end
 
 nnoremap("<leader>e", "<cmd>NvimTreeToggle<cr>")
@@ -13,3 +17,10 @@ nnoremap("<c-b>", "<cmd>Telescope buffers<cr>")
 
 nnoremap("<tab>", "<cmd>BufferLineCycleNext<cr>")
 nnoremap("<s-tab>", "<cmd>BufferLineCyclePrev<cr>")
+
+map("<leader>`", "ysiw`")
+map("<leader>'", "ysiw'")
+map('<leader>"', 'ysiw"')
+map("<leader>(", "ysiw(")
+map("<leader>[", "ysiw[")
+map("<leader>{", "ysiw{")

@@ -1,15 +1,33 @@
 local icons = require("icons")
 
 require("nvim-tree").setup({
-	disable_netrw = true,
-	hijack_cursor = true,
 	respect_buf_cwd = true,
-	root_dirs = { ".git" },
+	update_cwd = true,
+	hijack_cursor = true,
+	view = {
+		width = 30,
+		side = "left",
+	},
 	update_focused_file = {
 		enable = true,
-		update_root = true,
+		update_cwd = true,
+	},
+	filters = {
+		custom = {
+			".git",
+			"node_modules",
+		},
+	},
+	actions = {
+		open_file = {
+			window_picker = {
+				enable = false,
+			},
+		},
 	},
 	renderer = {
+		root_folder_modifier = ":t",
+		highlight_git = true,
 		icons = {
 			glyphs = {
 				default = "",
@@ -35,6 +53,9 @@ require("nvim-tree").setup({
 				},
 			},
 		},
+		indent_markers = {
+			enable = true,
+		},
 	},
 	diagnostics = {
 		enable = true,
@@ -45,8 +66,5 @@ require("nvim-tree").setup({
 			warning = icons.diagnostics.Warning,
 			error = icons.diagnostics.Error,
 		},
-	},
-	git = {
-		ignore = false,
 	},
 })

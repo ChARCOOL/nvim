@@ -1,121 +1,128 @@
 local cmp = require("cmp")
+local lspkind = require("lspkind")
 local luasnip = require("luasnip")
-local icons = require("icons")
 
-require("luasnip.loaders.from_vscode").lazy_load()
-
-luasnip.config.set_config({
-	history = true,
-	updateevents = "TextChanged,InsertEnter",
-})
-
-local check_backspace = function()
-	local col = vim.fn.col(".") - 1
-	return col == 0 or vim.fn.getline("."):sub(col, col):match("%s")
-end
+vim.opt.shortmess:append("c")
 
 cmp.setup({
+	preselect = cmp.PreselectMode.None,
+	mapping = {
+		["<up>"] = cmp.mapping.scroll_docs(-4),
+		["<down>"] = cmp.mapping.scroll_docs(4),
+		["<c-space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
+		["<cr>"] = cmp.mapping.confirm({
+			behavior = cmp.ConfirmBehavior.Insert,
+			select = true,
+		}),
+		["<esc>"] = cmp.mapping({
+			c = function()
+				if cmp.visible() then
+					cmp.close()
+				else
+					vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-c>", true, true, true), "n", true)
+				end
+			end,
+		}),
+		["<tab>"] = cmp.mapping(
+			cmp.mapping.select_next_item({
+				behavior = cmp.SelectBehavior.Select,
+			}),
+			{ "i", "c" }
+		),
+		["<s-tab>"] = cmp.mapping(
+			cmp.mapping.select_prev_item({
+				behavior = cmp.SelectBehavior.Select,
+			}),
+			{ "i", "c" }
+		),
+	},
+	sources = cmp.config.sources({
+		{ name = "copilot" },
+		{ name = "cmp_tabnine" },
+		{ name = "nvim_lsp" },
+		{ name = "nvim_lua" },
+		{ name = "luasnip" },
+		{ name = "path" },
+		{ name = "emoji" },
+	}, {
+		{ name = "buffer" },
+	}),
+	sorting = {
+		comparators = {
+			cmp.config.compare.offset,
+			cmp.config.compare.exact,
+			cmp.config.compare.score,
+			function(entry1, entry2)
+				local _, entry1_under = entry1.completion_item.label:find("^_+")
+				local _, entry2_under = entry2.completion_item.label:find("^_+")
+				entry1_under = entry1_under or 0
+				entry2_under = entry2_under or 0
+				if entry1_under > entry2_under then
+					return false
+				elseif entry1_under < entry2_under then
+					return true
+				end
+			end,
+			cmp.config.compare.kind,
+			cmp.config.compare.sort_text,
+			cmp.config.compare.length,
+			cmp.config.compare.order,
+		},
+	},
 	snippet = {
 		expand = function(args)
 			luasnip.lsp_expand(args.body)
 		end,
 	},
-	completion = {
-		autocomplete = {
-			cmp.TriggerEvent.InsertEnter,
-			cmp.TriggerEvent.TextChanged,
-		},
-		completeopt = "menu,menuone,noselect,noinsert",
-	},
-	mapping = {
-		["<c-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-		["<c-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-		["<down>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
-		["<up>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
-		["<c-d>"] = cmp.mapping.scroll_docs(-4),
-		["<c-f>"] = cmp.mapping.scroll_docs(4),
-		["<c-space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
-		["<c-e>"] = cmp.mapping({
-			i = cmp.mapping.abort(),
-			c = cmp.mapping.close(),
-		}),
-		["<cr>"] = cmp.mapping.confirm({
-			behavior = cmp.ConfirmBehavior.Replace,
-			select = true,
-		}),
-		["<tab>"] = cmp.mapping(function(fallback)
-			if cmp.visible() then
-				cmp.select_next_item()
-			elseif luasnip.expandable() then
-				luasnip.expand()
-			elseif luasnip.expand_or_jumpable() then
-				luasnip.expand_or_jump()
-			elseif check_backspace() then
-				fallback()
-			else
-				fallback()
-			end
-		end, { "i", "s" }),
-		["<s-tab>"] = cmp.mapping(function(fallback)
-			if cmp.visible() then
-				cmp.select_prev_item()
-			elseif luasnip.jumpable(-1) then
-				luasnip.jump(-1)
-			else
-				fallback()
-			end
-		end, { "i", "s" }),
-	},
 	formatting = {
-		fields = { "abbr", "kind" },
-		format = function(entry, vim_item)
-			vim_item.kind = icons.kind[vim_item.kind]
-
-			if entry.source.name == "cmp_tabnine" then
-				vim_item.kind = icons.misc.Robot
-				vim_item.kind_hl_group = "CmpItemKindTabnine"
-			end
-
-			if entry.source.name == "crates" then
-				vim_item.kind = icons.misc.Package
-				vim_item.kind_hl_group = "CmpItemKindCrate"
-			end
-
-			vim_item.menu = ({
-				nvim_lsp = "",
-				nvim_lua = "",
-				luasnip = "",
-				buffer = "",
-				path = "",
-			})[entry.source.name]
-
-			return vim_item
-		end,
-	},
-	sources = {
-		{ name = "crates", group_index = 1 },
-		{ name = "nvim_lsp", group_index = 2 },
-		{ name = "nvim_lua", group_index = 2 },
-		{ name = "luasnip", group_index = 2 },
-		{ name = "buffer", group_index = 2 },
-		{ name = "cmp_tabnine", group_index = 2 },
-		{ name = "path", group_index = 2 },
-	},
-	confirm_opts = {
-		behavior = cmp.ConfirmBehavior.Replace,
-		select = false,
-	},
-	window = {
-		documentation = {
-			border = "rounded",
-			winhighlight = "NormalFloat:Pmenu,NormalFloat:Pmenu,CursorLine:PmenuSel,Search:None",
-		},
-		completion = {
-			border = "rounded",
-			winhighlight = "NormalFloat:Pmenu,NormalFloat:Pmenu,CursorLine:PmenuSel,Search:None",
-		},
+		format = lspkind.cmp_format({
+			with_text = true,
+			menu = {
+				buffer = "[BUF]",
+				cmdline = "[CMD]",
+				cmp_git = "[GIT]",
+				cmp_tabnine = "[TBN]",
+				copilot = "[COP]",
+				emoji = "[EMJ]",
+				luasnip = "[SNIP]",
+				nvim_lsp = "[LSP]",
+				nvim_lua = "[API]",
+				path = "[PATH]",
+				spell = "[SPELL]",
+				treesitter = "[TREE]",
+			},
+		}),
 	},
 	experimental = {
 		ghost_text = true,
 	},
+})
+
+local search_sources = {
+	sources = cmp.config.sources({
+		{
+			name = "buffer",
+			options = { keyword_pattern = [=[[^[:blank:]].*]=] },
+		},
+	}),
+}
+
+cmp.setup.cmdline("/", search_sources)
+
+cmp.setup.cmdline("?", search_sources)
+
+cmp.setup.cmdline(":", {
+	sources = cmp.config.sources({
+		{ name = "path" },
+	}, {
+		{ name = "cmdline" },
+	}),
+})
+
+cmp.setup.filetype("gitcommit", {
+	sources = cmp.config.sources({
+		{ name = "cmp_git" },
+	}, {
+		{ name = "buffer" },
+	}),
 })
