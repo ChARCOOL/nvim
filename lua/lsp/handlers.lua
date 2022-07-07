@@ -4,31 +4,15 @@ M.capabilities = vim.lsp.protocol.make_client_capabilities()
 
 M.capabilities = require("cmp_nvim_lsp").update_capabilities(M.capabilities)
 
-M.capabilities.textDocument.codeAction = {
-	dynamicRegistration = true,
-	codeActionLiteralSupport = {
-		codeActionKind = {
-			valueSet = (function()
-				local res = vim.tbl_values(vim.lsp.protocol.CodeActionKind)
-				table.sort(res)
-				return res
-			end)(),
-		},
-	},
-}
-
 M.capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 M.capabilities.textDocument.completion.completionItem.resolveSupport = {
-	properties = {
-		"documentation",
-		"detail",
-		"additionalTextEdits",
-	},
+	properties = { "documentation", "detail", "additionalTextEdits" },
 }
 
-M.capabilities.experimental = {
-	hoverActions = true,
+M.capabilities.textDocument.foldingRange = {
+	dynamicRegistration = false,
+	lineFoldingOnly = true,
 }
 
 M.setup = function()

@@ -5,7 +5,9 @@ local luasnip = require("luasnip")
 vim.opt.shortmess:append("c")
 
 cmp.setup({
-	preselect = cmp.PreselectMode.None,
+	completion = {
+		completeopt = "menu,menuone,noinsert",
+	},
 	mapping = {
 		["<up>"] = cmp.mapping.scroll_docs(-4),
 		["<down>"] = cmp.mapping.scroll_docs(4),
@@ -19,7 +21,7 @@ cmp.setup({
 				if cmp.visible() then
 					cmp.close()
 				else
-					vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-c>", true, true, true), "n", true)
+					vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<c-c>", true, true, true), "n", true)
 				end
 			end,
 		}),
