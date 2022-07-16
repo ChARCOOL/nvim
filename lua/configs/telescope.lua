@@ -66,9 +66,6 @@ telescope.setup({
 				".git/",
 			},
 		},
-		lsp_code_actions = {
-			theme = "cursor",
-		},
 		colorscheme = {
 			enable_preview = true,
 		},

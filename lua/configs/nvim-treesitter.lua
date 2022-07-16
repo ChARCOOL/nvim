@@ -5,7 +5,7 @@ require("nvim-treesitter.configs").setup({
 	},
 	indent = {
 		enable = true,
-		disable = { "rust" },
+		disable = { "css", "rust" },
 	},
 	matchup = {
 		enable = true,
@@ -15,5 +15,28 @@ require("nvim-treesitter.configs").setup({
 	},
 	context_commentstring = {
 		enable = true,
+	},
+	incremental_selection = {
+		enable = true,
+		keymaps = {
+			init_selection = "gnn",
+			node_incremental = "grn",
+			scope_incremental = "grc",
+			node_decremental = "grm",
+		},
+	},
+	playground = {
+		enable = true,
+		updatetime = 25,
+		persist_queries = false,
+	},
+	textobjects = {
+		select = {
+			enable = true,
+			keymaps = {
+				["af"] = "@function.outer",
+				["if"] = "@function.inner",
+			},
+		},
 	},
 })

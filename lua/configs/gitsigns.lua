@@ -31,12 +31,12 @@ require("gitsigns").setup({
 			linehl = "GitSignsChangeLn",
 		},
 	},
-	numhl = true,
+	numhl = false,
 	linehl = false,
 	watch_gitdir = {
 		interval = 1000,
 	},
 	sign_priority = 6,
-	update_debounce = 200,
+	update_debounce = 300,
 	status_formatter = nil,
 })

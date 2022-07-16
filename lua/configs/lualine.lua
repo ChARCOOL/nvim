@@ -32,9 +32,8 @@ require("lualine").setup({
 			{
 				"diagnostics",
 				sources = {
-					"nvim_lsp",
 					"nvim_diagnostic",
-					"vim_lsp",
+					"coc",
 				},
 				symbols = {
 					error = icons.diagnostics.Error .. " ",

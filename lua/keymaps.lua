@@ -15,12 +15,12 @@ end
 
 nnoremap("<leader>e", "<cmd>NvimTreeToggle<cr>")
 
-nnoremap("<c-p>", "<cmd>Telescope find_files<cr>")
-nnoremap("<c-f>", "<cmd>Telescope live_grep<cr>")
-nnoremap("<c-b>", "<cmd>Telescope buffers<cr>")
+nnoremap("<C-p>", "<cmd>Telescope find_files<cr>")
+nnoremap("<C-f>", "<cmd>Telescope live_grep<cr>")
+nnoremap("<C-b>", "<cmd>Telescope buffers<cr>")
 
-nnoremap("<tab>", "<cmd>BufferLineCycleNext<cr>")
-nnoremap("<s-tab>", "<cmd>BufferLineCyclePrev<cr>")
+nnoremap("<Tab>", "<cmd>BufferLineCycleNext<cr>")
+nnoremap("<S-Tab>", "<cmd>BufferLineCyclePrev<cr>")
 
 map("<leader>`", "ysiw`")
 map("<leader>'", "ysiw'")

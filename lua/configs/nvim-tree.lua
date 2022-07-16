@@ -13,8 +13,9 @@ require("nvim-tree").setup({
 		update_cwd = true,
 	},
 	filters = {
+		dotfiles = false,
 		custom = {
-			".git",
+			"\\.git",
 			"node_modules",
 		},
 	},
@@ -53,12 +54,10 @@ require("nvim-tree").setup({
 				},
 			},
 		},
-		indent_markers = {
-			enable = true,
-		},
 	},
+	-- Currently disabled because of nvim tree issue with coc kyazdani42/nvim-tree.lua/issues/1317
 	diagnostics = {
-		enable = true,
+		enable = false,
 		show_on_dirs = true,
 		icons = {
 			hint = icons.diagnostics.Hint,

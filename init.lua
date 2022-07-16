@@ -6,6 +6,6 @@ require("autocommands")
 require("plugins")
 require("configs")
 
-require("lsp")
+vim.cmd([[source /home/kudret/.config/nvim/viml/configs/coc.vim]])
 
 require("neovide")
