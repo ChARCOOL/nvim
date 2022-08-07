@@ -2,7 +2,6 @@ vim.o.compatible = false
 
 vim.o.breakindent = true
 vim.o.clipboard = vim.o.clipboard .. "unnamedplus"
-vim.o.cmdheight = 2
 vim.o.completeopt = "menuone,noinsert,noselect"
 vim.o.encoding = "utf-8"
 vim.o.expandtab = true
@@ -35,7 +34,7 @@ vim.o.winblend = 20
 vim.o.wrap = false
 vim.o.writebackup = false
 
-vim.opt.iskeyword:append({ "-", ",", "$" })
+vim.opt.iskeyword:append({ "-", "$" })
 
 vim.g.loaded_2html_plugin = 1
 vim.g.loaded_netrw = 1

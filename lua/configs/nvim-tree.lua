@@ -55,7 +55,7 @@ require("nvim-tree").setup({
 			},
 		},
 	},
-	-- Currently disabled because of nvim tree issue with coc kyazdani42/nvim-tree.lua/issues/1317
+	-- Currently disabled because of nvim-tree issue with coc kyazdani42/nvim-tree.lua/issues/1317
 	diagnostics = {
 		enable = false,
 		show_on_dirs = true,

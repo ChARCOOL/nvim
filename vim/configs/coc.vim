@@ -5,24 +5,26 @@ let g:coc_global_extensions = [
       \ 'coc-html',
       \ 'coc-json',
       \ 'coc-prettier',
+      \ 'coc-react-refactor',
       \ 'coc-rust-analyzer',
       \ 'coc-snippets',
       \ 'coc-styled-components',
+      \ 'coc-stylua',
       \ 'coc-sumneko-lua',
       \ 'coc-tsserver',
       \ 'coc-yaml']
 
-let g:coc_enable_locationlist = 0 
-let g:coc_disable_transparent_cursor = 1
-
-let g:coc_snippet_next = '<Tab>'
-let g:coc_snippet_prev = '<S-Tab>'
+let g:coc_snippet_next = '<C-j>'
+let g:coc_snippet_prev = '<C-k>'
 
 inoremap <silent><expr> <Tab>
-      \ pumvisible() ? "\<C-n>" :
+      \ coc#pum#visible() ? coc#pum#next(1):
       \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr><S-Tab> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+      \ : "\<C-g>u\<CR>\<C-r>=coc#on_enter()\<CR>"
 
 function! CheckBackspace() abort
   let col = col('.') - 1
@@ -30,8 +32,6 @@ function! CheckBackspace() abort
 endfunction
 
 inoremap <silent><expr> <C-Space> coc#refresh()
-
-inoremap <expr> <CR> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 
 nnoremap <silent> K :call ShowDocumentation()<CR>
 
@@ -58,22 +58,13 @@ nmap <leader>f <Plug>(coc-format-selected)
 
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
-augroup CocGroup
+augroup mygroup
   autocmd!
 
-  autocmd FileType
-        \ javascript, javascriptreact, 
-        \ typescript, typescriptreact, 
-        \ json, 
-        \ rust 
-        \ setlocal formatexpr=CocAction('formatSelected')
+  autocmd FileType typescript,typescriptreact,rust setl formatexpr=CocAction('formatSelected')
 
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-
-  autocmd User CocLocationsChange	CocList --normal location
 augroup end
-
-autocmd User CocOpenFloat call setwinvar(g:coc_last_float_win, "&winblend", 20)
 
 xmap <leader>a <Plug>(coc-codeaction-selected)
 nmap <leader>a <Plug>(coc-codeaction-selected)
@@ -87,6 +78,8 @@ xmap <silent> <C-s> <Plug>(coc-range-select)
 
 command! -nargs=0 Format :call CocActionAsync('format')
 command! -nargs=0 Prettier :call CocActionAsync('runCommand', 'prettier.formatFile')
-command! -nargs=0 OR :call CocActionAsync('runCommand', 'editor.action.organizeImport')
+command! -nargs=0 Organize :call CocActionAsync('runCommand', 'editor.action.organizeImport')
 
-hi CocUnderline ctermbg=0 term=none
+hi CocUnderline gui=undercurl term=undercurl
+hi CocErrorHighlight ctermfg=red  guifg=#c4384b gui=undercurl term=undercurl
+hi CocWarningHighlight ctermfg=yellow guifg=#c4ab39 gui=undercurl term=undercurl

@@ -2,6 +2,7 @@ require("configs.impatient")
 
 require("configs.bufferline")
 require("configs.dressing")
+require("configs.git-conflict")
 require("configs.gitsigns")
 require("configs.lualine")
 require("configs.matchup")

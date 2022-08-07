@@ -5,30 +5,31 @@ local function nnoremap(lhs, rhs)
 	vim.api.nvim_set_keymap("n", lhs, rhs, { noremap = true, silent = true })
 end
 
-local function map(lhs, rhs)
+local function nmap(lhs, rhs)
 	vim.api.nvim_set_keymap("n", lhs, rhs, { noremap = false, silent = true })
 end
 
 local function xnoremap(lhs, rhs)
-	vim.keymap.set("x", lhs, rhs, { noremap = true, expr = true })
+	vim.api.nvim_set_keymap("x", lhs, rhs, { noremap = true, silent = true })
 end
 
-nnoremap("<leader>e", "<cmd>NvimTreeToggle<cr>")
+nnoremap("<leader>e", ":<C-u>NvimTreeToggle<CR>")
 
-nnoremap("<C-p>", "<cmd>Telescope find_files<cr>")
-nnoremap("<C-f>", "<cmd>Telescope live_grep<cr>")
-nnoremap("<C-b>", "<cmd>Telescope buffers<cr>")
+nnoremap("<C-p>", ":<C-u>Telescope find_files<CR>")
+nnoremap("<C-f>", ":<C-u>Telescope live_grep<CR>")
+nnoremap("<C-b>", ":<C-u>Telescope buffers<CR>")
 
-nnoremap("<Tab>", "<cmd>BufferLineCycleNext<cr>")
-nnoremap("<S-Tab>", "<cmd>BufferLineCyclePrev<cr>")
+nnoremap("<leader>d", ":<C-u>:Telescope coc diagnostics<CR>")
+nnoremap("<leader>s", ":<C-u>:Telescope coc document_symbols<CR>")
 
-map("<leader>`", "ysiw`")
-map("<leader>'", "ysiw'")
-map('<leader>"', 'ysiw"')
-map("<leader>(", "ysiw(")
-map("<leader>[", "ysiw[")
-map("<leader>{", "ysiw{")
+nnoremap("<Tab>", ":<C-u>BufferLineCycleNext<CR>")
+nnoremap("<S-Tab>", ":<C-u>BufferLineCyclePrev<CR>")
 
-xnoremap("p", function()
-	return 'pgv"' .. vim.v.register .. "y"
-end)
+nmap("<leader>`", "ysiw`")
+nmap("<leader>'", "ysiw'")
+nmap('<leader>"', 'ysiw"')
+nmap("<leader>(", "ysiw(")
+nmap("<leader>[", "ysiw[")
+nmap("<leader>{", "ysiw{")
+
+xnoremap("p", "pgvy")
